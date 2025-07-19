@@ -128,4 +128,42 @@ else:
         v3 = st.number_input("Var3", value=0.0)
 
         toc = st.selectbox("Type of Cab", df['Type_of_Cab'].unique())
-        cli = st.selectbox("Confidence Lif
+        cli = st.selectbox("Confidence Life Style Index", df['Confidence_Life_Style_Index'].unique())
+        dtp = st.selectbox("Destination Type", df['Destination_Type'].unique())
+        gen = st.selectbox("Gender", df['Gender'].unique())
+        mis = st.selectbox("Life_Style_Index_Is_Missing", df['Life_Style_Index_Is_Missing'].unique())
+        tdc = st.selectbox("Trip_Distance_Category", df['Trip_Distance_Category'].unique())
+        clc = st.selectbox("Customer_Loyalty_Category", df['Customer_Loyalty_Category'].unique())
+        crc = st.selectbox("Customer_Rating_Category", df['Customer_Rating_Category'].unique())
+        cac = st.selectbox("Cancellation_Category", df['Cancellation_Category'].unique())
+        clv = st.selectbox("CLV_Segment", df['CLV_Segment'].unique())
+
+        submit = st.form_submit_button("Predict")
+
+    if submit:
+        input_dict = {
+            'Trip_Distance': td,
+            'Customer_Since_Months': csm,
+            'Life_Style_Index': lsi,
+            'Customer_Rating': cr,
+            'Cancellation_Last_1Month': cl1,
+            'Var2': v2,
+            'Var3': v3,
+            'Type_of_Cab': toc,
+            'Confidence_Life_Style_Index': cli,
+            'Destination_Type': dtp,
+            'Gender': gen,
+            'Life_Style_Index_Is_Missing': mis,
+            'Trip_Distance_Category': tdc,
+            'Customer_Loyalty_Category': clc,
+            'Customer_Rating_Category': crc,
+            'Cancellation_Category': cac,
+            'CLV_Segment': clv
+        }
+        df_single = pd.DataFrame([input_dict])
+        pred = pipeline.predict(df_single)[0]
+        proba = pipeline.predict_proba(df_single)[0]
+
+        st.success(f"Predicted Surge Pricing Type: **{le.inverse_transform([pred])[0]}**")
+        st.write("Prediction Probabilities:")
+        st.dataframe(pd.DataFrame([proba], columns=le.classes_))
