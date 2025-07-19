@@ -161,13 +161,3 @@ else:
         st.success(f"Predicted Surge Pricing Type: **{le.inverse_transform([pred])[0]}**")
         st.write("Prediction Probabilities:")
         st.dataframe(pd.DataFrame([proba], columns=le.classes_))
-
-# -----------------------------------------------------------------------------
-# 7. Optional: Confusion Matrix
-if st.sidebar.checkbox("Show Confusion Matrix (on Test Set)"):
-    y_pred_test = pipeline.predict(X_test)
-    cm = confusion_matrix(y_test_enc, y_pred_test)
-    plt.figure(figsize=(6, 4))
-    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues',
-                xticklabels=le.classes_, yticklabels=le.classes_)
-    st.pyplot(plt.gcf())
